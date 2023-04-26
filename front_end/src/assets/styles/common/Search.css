@@ -1,0 +1,71 @@
+.search {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search__input {
+    display: flex;
+    align-items: center;
+    border-radius: 20px; /* Thêm thuộc tính này để làm tròn các góc của phần tử */
+}
+
+.search__input select {
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #555252;
+    border-radius: 20px;  
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Thêm thuộc tính này để tạo hiệu ứng bóng cho phần tử */
+    background-color: #f17fa5;
+}
+
+.search__input input {
+    width: 500px;
+    height: 40px;
+    border: none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom: 1px solid #cccccc;
+    padding-left: 20px;
+}
+
+.search__input button {
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: #3399ff;
+    color: white;
+    border-top-right-radius: 20px; /* Thêm thuộc tính này để làm tròn góc trên bên phải của phần tử */
+    border-bottom-right-radius: 20px; /* Thêm thuộc tính này để làm tròn góc dưới bên phải của phần tử */
+    border-bottom: 1px solid #cccccc;
+}
+
+.search__input button:hover {
+    background-color: #66b3ff;
+}
+
+.search__input button:focus {
+    outline: none;
+}
+
+.search__suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search__suggestions button {
+    border: none;
+    background-color: transparent;
+    color: #3399ff;
+}
+
+.search__suggestions button:hover {
+    text-decoration: underline;
+}
+
+.search__suggestions button:focus {
+    outline: none;
+}

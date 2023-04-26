@@ -1,0 +1,6 @@
+
+.home-page{
+    background-image: url("../../assets/images/bgr.jpg");
+    background-size: cover;
+    height: 100vh; 
+}
