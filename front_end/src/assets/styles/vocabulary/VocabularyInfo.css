@@ -1,0 +1,31 @@
+.vocabulary-info {
+    /* add some styles for the container div */
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.vocabulary-info__title {
+    /* add some styles for the title div */
+    text-align: center;
+}
+
+.vocabulary-info__title h2 {
+    /* add some styles for the title heading */
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.vocabulary-info__description {
+    /* add some styles for the description div */
+}
+
+.vocabulary-info__description p {
+    /* add some styles for the description paragraph */
+    font-size: 18px;
+    color: #666;
+    line-height: 1.5;
+}
