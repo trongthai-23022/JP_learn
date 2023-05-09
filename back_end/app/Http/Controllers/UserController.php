@@ -29,12 +29,23 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        //validate dữ liệu được gửi lên
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
         $user = $this->userRepository->create($request->all());
         return response()->json($user);
     }
 
     public function update(Request $request, $id)
     {
+        //validate dữ liệu được gửi lên
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id,
+        ]);
         $user = $this->userRepository->update($id, $request->all());
         return response()->json($user);
     }
