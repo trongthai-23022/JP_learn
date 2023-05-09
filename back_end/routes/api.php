@@ -22,10 +22,15 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
     Route::post('test', 'test');
 });
-Route::controller(UserController::class)->group(function () {
+Route::controller(UserController::class)->middleware('jwt.auth')->group(function () {
     Route::get('users', 'index');
     Route::get('users/{id}', 'show');
     Route::post('users', 'store');
     Route::put('users/{id}', 'update');
     Route::delete('users/{id}', 'destroy');
-})->middleware('auth:api');
+});
+
+//Route controller Lesson with middleware auth
+
+
+
