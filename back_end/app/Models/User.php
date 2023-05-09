@@ -18,6 +18,8 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'email',
@@ -56,5 +58,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function studyHistory()
+    {
+        return $this->hasMany(StudyHistory::class);
     }
 }

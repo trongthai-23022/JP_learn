@@ -9,4 +9,16 @@ class Lesson extends Model
 {
     use HasFactory;
 
+    protected $table = 'lessons';
+    
+    protected $fillable = [
+        'name',
+        'description',
+        'created_at'
+    ];
+
+    public function vocabularies()
+    {
+        return $this->belongsToMany(Vocabulary::class, 'lesson_vocabularies');
+    }
 }

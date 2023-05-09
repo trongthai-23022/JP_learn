@@ -14,6 +14,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'test']]);
     }
 
 
@@ -81,7 +82,7 @@ class AuthController extends Controller
         return response()->json(compact('refreshed_token'));
     }
 
-    public public function test()
+    public function test()
     {
         return response()->json(['message' => 'Hello World!']);
     }
