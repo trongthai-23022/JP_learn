@@ -27,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\StudyHistory\StudyHistoryRepositoryInterface::class,
             \App\Repositories\StudyHistory\StudyHistoryRepository::class
         );
+        //register LessonRepository
+        $this->app->singleton(
+            \App\Repositories\Lesson\LessonRepositoryInterface::class,
+            \App\Repositories\Lesson\LessonRepository::class
+        );
 
     }
 

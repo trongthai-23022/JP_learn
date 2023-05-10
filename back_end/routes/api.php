@@ -46,7 +46,11 @@ Route::controller(StudyHistory::class)->middleware('jwt.auth')->group(function()
     Route::put('study_histories/{id}', 'update');
     Route::delete('study_histories/{id}', 'destroy');
 });
-//Route controller Lesson with middleware auth
-
-
+Route::controller(LessonHistory::class)->middleware('jwt.auth')->group(function(){
+    Route::get('lesson_histories', 'index');
+    Route::get('lesson_histories/{id}', 'show');
+    Route::post('lesson_histories', 'store');
+    Route::put('lesson_histories/{id}', 'update');
+    Route::delete('lesson_histories/{id}', 'destroy');
+});
 
