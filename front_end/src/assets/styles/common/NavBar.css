@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: space-between;
     height: 80px;
-    background-color: #f0f0f0;
+    background-color: #6667AB;
     padding: 0 20px;
 }
 
@@ -12,18 +12,29 @@
 }
 
 .navbar__logo img {
-    width: 100%;
+    width: 90%;
     height: auto;
 }
 
 .navbar__links {
     display: flex;
     gap: 20px;
+    align-items: center;
+}
+.navbar__actions{
+    display: flex;
+    gap: 20px;
 }
 
 .navbar__links a {
     text-decoration: none;
-    color: #333333;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}
+.navbar__actions a{
+    text-decoration: none;
+    color: #ffffff;
     font-family: Arial, sans-serif;
     font-size: 18px;
 }
