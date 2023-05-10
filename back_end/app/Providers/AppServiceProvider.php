@@ -22,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Vocabulary\VocabularyRepositoryInterface::class,
             \App\Repositories\Vocabulary\VocabularyRepository::class
         );
+        //register StudyHistoryRepository
+        $this->app->singleton(
+            \App\Repositories\StudyHistory\StudyHistoryRepositoryInterface::class,
+            \App\Repositories\StudyHistory\StudyHistoryRepository::class
+        );
+
     }
 
     /**

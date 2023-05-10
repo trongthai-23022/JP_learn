@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\StudyHistory;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,13 @@ Route::controller(VocabularyController::class)->middleware('jwt.auth')->group(fu
     Route::put('vocabularies/{id}', 'update');
     Route::delete('vocabularies/{id}', 'destroy');
 });
-
+Route::controller(StudyHistory::class)->middleware('jwt.auth')->group(function(){
+    Route::get('study_histories', 'index');
+    Route::get('study_histories/{id}', 'show');
+    Route::post('study_histories', 'store');
+    Route::put('study_histories/{id}', 'update');
+    Route::delete('study_histories/{id}', 'destroy');
+});
 //Route controller Lesson with middleware auth
 
 
