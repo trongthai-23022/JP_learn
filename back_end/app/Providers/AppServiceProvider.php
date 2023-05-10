@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\User\UserRepositoryInterface;
-use App\Repositories\User\UserRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,8 +14,13 @@ class AppServiceProvider extends ServiceProvider
     {
         //register UserRepository
         $this->app->singleton(
-            UserRepositoryInterface::class,
-            UserRepository::class
+            \App\Repositories\User\UserRepositoryInterface::class,
+            \App\Repositories\User\UserRepository::class
+        );
+        //register VocabularyRepository
+        $this->app->singleton(
+            \App\Repositories\Vocabulary\VocabularyRepositoryInterface::class,
+            \App\Repositories\Vocabulary\VocabularyRepository::class
         );
     }
 

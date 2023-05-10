@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Vocabulary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VocabularyController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +30,13 @@ Route::controller(UserController::class)->middleware('jwt.auth')->group(function
     Route::post('users', 'store');
     Route::put('users/{id}', 'update');
     Route::delete('users/{id}', 'destroy');
+});
+Route::controller(VocabularyController::class)->middleware('jwt.auth')->group(function(){
+    Route::get('vocabularies', 'index');
+    Route::get('vocabularies/{id}', 'show');
+    Route::post('vocabularies', 'store');
+    Route::put('vocabularies/{id}', 'update');
+    Route::delete('vocabularies/{id}', 'destroy');
 });
 
 //Route controller Lesson with middleware auth
