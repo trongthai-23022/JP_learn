@@ -8,13 +8,15 @@ const Navbar = () => {
         <div className="navbar">
             <div className="navbar__links">
                 <div className="navbar__logo">
-                    <img src={logoEZ} alt="logo" />
+                    <Link to="/">
+                        <img src={logoEZ} alt="logo" />
+                    </Link>
                 </div>
                 <Link to="/">Tra cứu</Link>
                 <Link to="/lesson">Từ vựng của tôi</Link>
             </div>
             <div className="navbar__actions">
-                <Link> Đăng nhập</Link>        
+                <Link> Đăng nhập</Link>
                 <Link>Đăng ký</Link>
             </div>
         </div>

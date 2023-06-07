@@ -1,31 +1,69 @@
-.vocabulary-info {
-    /* add some styles for the container div */
+.VocabularyInfo__contain {
     width: 80%;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-}
-
-.vocabulary-info__title {
-    /* add some styles for the title div */
-    text-align: center;
-}
-
-.vocabulary-info__title h2 {
-    /* add some styles for the title heading */
-    font-size: 24px;
-    color: #333;
+   }
+   
+   .VocabularyInfo__contain__info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+   }
+   .VocabularyInfo__contain__kanji {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 80%;
+   }
+   
+   .VocabularyInfo__contain__kanji__title {
+    font-size: 20px;
+    font-weight: bold;
     margin-bottom: 10px;
-}
-
-.vocabulary-info__description {
-    /* add some styles for the description div */
-}
-
-.vocabulary-info__description p {
-    /* add some styles for the description paragraph */
-    font-size: 18px;
-    color: #666;
-    line-height: 1.5;
-}
+   }
+   
+   .VocabularyInfo__contain__kanji__kun {
+    font-size: 16px;
+    margin-bottom: 5px;
+   }
+   
+   .VocabularyInfo__contain__kanji__on {
+    font-size: 16px;
+    margin-bottom: 5px;
+   }
+   
+   .VocabularyInfo__contain__kanji__stroke-count {
+    font-size: 16px;
+    margin-bottom: 5px;
+   }
+   
+   .VocabularyInfo__contain__kanji__level {
+    font-size: 16px;
+    margin-bottom: 5px;
+   }
+   
+   .VocabularyInfo__contain__kanji__Detail {
+    font-size: 16px;
+    margin-bottom: 5px;
+   }
+   
+   .VocabularyInfo__contain__kanji__mean {
+    font-size: 16px;
+    margin-bottom: 5px;
+   }
+   
+   .VocabularyInfo__contain__video {
+    width: 20%;
+    height: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+   }
+   .VocabularyInfo__contain__video_replay{
+    margin-top: 10px;
+   }
+   
