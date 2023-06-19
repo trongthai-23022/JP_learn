@@ -6,6 +6,7 @@ import { BiEdit, BiEraser } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { AiOutlineEdit, AiOutlineCloseCircle } from "react-icons/ai";
+import axios from "axios";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
@@ -13,6 +14,9 @@ const Search = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showHandwriting, setShowHandwriting] = useState(false);
   const canvasRef = useRef(null);
+  const timeoutRef = useRef(null);
+  let result = [];
+  const [displayedResults, setDisplayedResults] = useState([]);
 
   const navigate = useNavigate();
 
@@ -30,6 +34,11 @@ const Search = () => {
     // TODO: dispatch search action with keyword and searchType
     if (keyword === "") return;
     navigate(`/search/detail/${keyword}`);
+  };
+  const keyPressEnter = (e) => {
+    if ((e.key === 'Enter') & (keyword !== '')) {
+      navigate(`/search/detail/${keyword}`);
+    }
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -52,8 +61,34 @@ const Search = () => {
   };
   const handleChangeHandwriting = () => {
     if (canvasRef.current) {
+      clearTimeout(timeoutRef.current);
+
+      timeoutRef.current = setTimeout(() => {
       const imageData = canvasRef.current.canvas.drawing.toDataURL();
-      console.log("Handwriting image data:", imageData);
+      console.log(imageData);
+      const base64Data = imageData.split(',')[1];
+      const formData = new FormData();
+      formData.append('data', base64Data);
+
+
+      axios.post("http://127.0.0.1:5000/model", formData)
+        .then(response => {
+          // Xử lý kết quả từ API trả về
+          result = response.data.Kanji;
+          console.log(result);
+          const displayedResults = result.map((item, i) => (
+            <span className="result-item" onClick={() => setKeyword(item)} key={i}>
+            {item}
+          </span>
+          ));
+          setDisplayedResults(displayedResults);
+        })
+        .catch(error => {
+          // Xử lý lỗi nếu có
+          console.error(error);
+        });
+
+    },1000);
     }
   };
 
@@ -73,6 +108,7 @@ const Search = () => {
             placeholder="Tìm kiếm"
             value={keyword}
             onChange={handleKeywordChange}
+            onKeyPress={keyPressEnter}
 
           />
           <div className="search__right-items">
@@ -100,12 +136,9 @@ const Search = () => {
               <button onClick={handleBackButtonClick} className="search_handwriting_canvas__top__button"><RiArrowGoBackFill /></button>
               <button onClick={handleClearButtonClick} className="search_handwriting_canvas__top__button"><BiEraser /></button>
               {/* TODO: Phần này sẽ trả về các ký tự được dự đoán */}
-              {/* <div className='search_handwriting_canvas__top__result'>
-                {result.map((item, i) => (
-                  <p id='outputResult' onClick={() => setKeyword(item)} key={i}>
-                    {item}
-                  </p>
-                ))} */}
+              <div className='search_handwriting_canvas__top__result'>
+                {displayedResults}
+              </div>
             </div>
             <CanvasDraw
               className="canvas__draw__handwriting"
@@ -116,6 +149,8 @@ const Search = () => {
               brushRadius={3}
               lazyRadius={0}
               onChange={handleChangeHandwriting}
+              backgroundColor="#ffffff"
+              hideGrid={true}
             />
 
           </div>

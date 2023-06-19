@@ -120,6 +120,23 @@
 .search_handwriting_canvas__top__button >svg {
     font-size: 20px;
 }
+.search_handwriting_canvas__top__result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    
+}
+  
+.result-item {
+    overflow: auto;
+    white-space: nowrap;
+    flex-grow: 1;
+    display: inline-block;
+    border: 1px solid #555252;
+    margin-left: 10px ;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 .canvas__draw__handwriting {
     display: flex;
     justify-content: center;
