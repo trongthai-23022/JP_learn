@@ -5,6 +5,7 @@
     height: 100vh; 
     align-items: center ;
     width: 100vw;
+    margin: 0;
 }
 .home-page__contain{
     display: flex;
@@ -32,3 +33,9 @@
     justify-content: center;
 }
 
+@media (max-width: 530px){
+    .home-page{
+        width: 530px;
+    }
+
+}

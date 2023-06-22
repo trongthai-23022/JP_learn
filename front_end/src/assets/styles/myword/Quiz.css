@@ -1,0 +1,30 @@
+.answerGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .answer-card{
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .correct-answer{
+    background-color: #c1f0c1 !important;
+  }
+  
+  .wrong-answer {
+    background-color: #f0c1c1 !important;
+  }
+  .answer-card:hover {
+    /* Các thuộc tính khi hover */
+    transform: scale(1.05);
+    /* Các thuộc tính khác */
+  }
+
+  .feedback-correct{
+    color: #4caf50;
+  }
+  .feedback-wrong{
+    color: #f44336;
+  }

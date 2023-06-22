@@ -20,13 +20,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 30px;
     /* Thêm thuộc tính này để làm tròn các góc của phần tử */
-    width: 500px;
-    height: 40px;
+    width: 600px;
+    height: 54px;
     border: none;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-top-left-radius: 27px;
+    border-bottom-left-radius: 27px;
     border-bottom: 1px solid #cccccc;
     padding-left: 20px;
     background-color: rgb(255, 255, 255);
@@ -34,10 +34,10 @@
 
 .search_container select {
     width: 150px;
-    height: 40px;
+    height: 54px;
     text-align: center;
     border: 1px solid #555252;
-    border-radius: 20px;
+    border-radius: 27px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     /* Thêm thuộc tính này để tạo hiệu ứng bóng cho phần tử */
     background-color: #f17fa5;
@@ -143,3 +143,24 @@
     align-items: center;
     border-radius: 0 0 5px 5px;
 }
+
+
+@media (max-width: 770px) {
+
+    
+    .search__input {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  
+}
+@media (min-width: 770px){
+    .search__input {
+        width: 545px;
+        margin-bottom: 8px;
+    }
+    
+}
+
+    
+

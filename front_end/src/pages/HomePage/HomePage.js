@@ -6,6 +6,7 @@ import "./HomePage.css";
 import bgImg from "../../assets/images/OIG.jpg";
 import logoimg from "../../assets/images/logoEZ.png";
 
+
 const HomePage = () => {
     return (
         <div className="home-page" >
