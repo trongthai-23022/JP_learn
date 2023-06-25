@@ -6,9 +6,6 @@ RUN ln -fs /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime \
     && apt-get update \
     && apt-get install -y tzdata
 
-RUN apt-get update && apt-get install -y libxml2-dev libcurl4-openssl-dev \
-    && docker-php-ext-install dom xml curl
-
 # Cài đặt các gói cần thiết
 RUN apt-get update \
     && apt-get install -y curl git nginx
@@ -25,6 +22,8 @@ RUN apt-get install -y php
 
 # Cài đặt Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN apt-get update && apt-get install -y libxml2-dev libcurl4-openssl-dev php-dom php-xml php-curl
 
 # Sao chép ứng dụng Laravel, ReactJS và Flask vào container
 COPY back_end /app/laravel-app
