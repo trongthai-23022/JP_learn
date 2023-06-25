@@ -1,0 +1,7 @@
+.SeachPageDetail__contain{
+    background-image: url("../../assets/images/bgr.jpg");
+    background-size: cover;
+    height: 100vh;
+    overflow-x: scroll;
+
+}

@@ -1,0 +1,166 @@
+.search_container {
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.search__type {
+    padding: 10px;
+}
+
+.search {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search__input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 30px;
+    /* Thêm thuộc tính này để làm tròn các góc của phần tử */
+    width: 600px;
+    height: 54px;
+    border: none;
+    border-top-left-radius: 27px;
+    border-bottom-left-radius: 27px;
+    border-bottom: 1px solid #cccccc;
+    padding-left: 20px;
+    background-color: rgb(255, 255, 255);
+}
+
+.search_container select {
+    width: 150px;
+    height: 54px;
+    text-align: center;
+    border: 1px solid #555252;
+    border-radius: 27px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Thêm thuộc tính này để tạo hiệu ứng bóng cho phần tử */
+    background-color: #f17fa5;
+}
+
+.search__input input {
+    flex: 1;
+    border: none;
+}
+
+.search__right-items{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+.search__button-edit {
+    padding: 8px;
+    background-color: #ffffff;
+    color: rgb(100, 99, 99);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search__button-edit>svg {
+    font-size: 20px;
+}
+
+
+.search__input input:focus {
+    outline: none;
+}
+
+
+.search__suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search__suggestions button {
+    border: none;
+    background-color: transparent;
+    color: #3399ff;
+}
+
+.search__suggestions button:hover {
+    text-decoration: underline;
+}
+
+.search__suggestions button:focus {
+    outline: none;
+}
+
+.search__handwriting {
+    width: 100%;
+    box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    background-color: #ece2e2;
+
+}
+
+.search__handwriting_canvas {
+    width: 100%;
+    height: 100%;
+
+}
+.search_handwriting_canvas__top{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2px;
+    
+}
+.search_handwriting_canvas__top__button{
+    margin: 3px;
+}
+.search_handwriting_canvas__top__button >svg {
+    font-size: 20px;
+}
+.search_handwriting_canvas__top__result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    
+}
+  
+.result-item {
+    overflow: auto;
+    white-space: nowrap;
+    flex-grow: 1;
+    display: inline-block;
+    border: 1px solid #555252;
+    margin-left: 10px ;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.canvas__draw__handwriting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 0 5px 5px;
+}
+
+
+@media (max-width: 770px) {
+
+    
+    .search__input {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  
+}
+@media (min-width: 770px){
+    .search__input {
+        width: 545px;
+        margin-bottom: 8px;
+    }
+    
+}
+
+    
+

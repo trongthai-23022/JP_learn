@@ -1,0 +1,41 @@
+
+.home-page{
+    background-image: url("../../assets/images/bgr.jpg");
+    background-size: cover;
+    height: 100vh; 
+    align-items: center ;
+    width: 100vw;
+    margin: 0;
+}
+.home-page__contain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+}
+.home-page__logo{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+.home-page__logo p{
+    color: #1a74fa;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    padding-top: 0;
+
+}
+.home-page__search{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 530px){
+    .home-page{
+        width: 530px;
+    }
+
+}
