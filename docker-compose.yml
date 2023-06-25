@@ -1,0 +1,12 @@
+version: "3"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./back_end:/app/laravel-app
+      - ./front_end/build:/app/react-app/build
+      - ./ai_server:/app/flask-app
