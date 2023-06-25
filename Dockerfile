@@ -51,6 +51,8 @@ COPY nginx/default.conf /etc/nginx/sites-available/default
 # Mở cổng
 EXPOSE 80
 
+EXPOSE 3000
+
 # Khởi động Nginx và các ứng dụng
 CMD service nginx start \
     # && cd /app/laravel-app \
