@@ -6,6 +6,9 @@ RUN ln -fs /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime \
     && apt-get update \
     && apt-get install -y tzdata
 
+RUN apt-get update && apt-get install -y libxml2-dev libcurl4-openssl-dev \
+    && docker-php-ext-install dom xml curl
+
 # Cài đặt các gói cần thiết
 RUN apt-get update \
     && apt-get install -y curl git nginx
