@@ -53,7 +53,9 @@ EXPOSE 80
 
 # Khởi động Nginx và các ứng dụng
 CMD service nginx start \
-    && cd /app/laravel-app \
-    && php artisan serve --host=0.0.0.0 --port=8000 \
-    && cd /app/flask-app \
-    && python3 app.py
+    # && cd /app/laravel-app \
+    # && php artisan serve --host=0.0.0.0 --port=8000 \
+    # && cd /app/flask-app \
+    # && python3 app.py   \
+    && cd /app/react-app \
+    && npm start
