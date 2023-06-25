@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchMaziiData } from '../../api/mazii.js';
 import { fetchKanjiData } from '../../api/kanji.js';
-import { Image, List, Row, Col, Table, Typography,Button } from 'antd';
+import { Image, List, Row, Col, Table, Typography, Button } from 'antd';
 import '../../assets/styles/vocabulary/VocabularyInfo.css';
 import ReactPlayer from 'react-player';
 import { useRef } from 'react';
+import Grid from '@mui/material/Grid';
 
 const VocabularyInfo = ({ kanji }) => {
   const { Paragraph } = Typography;
@@ -42,10 +43,10 @@ const VocabularyInfo = ({ kanji }) => {
         const response = await fetchMaziiData(kanji);
         console.log(response.results[0]);
         setDataMazzi(response.results[0]);
-        
+
       } catch (error) {
         console.error('Error fetching Kanji data:', error);
-        
+
       }
     };
 
@@ -55,7 +56,7 @@ const VocabularyInfo = ({ kanji }) => {
   if (isDataNotFound) {
     return (
       <div className="VocabularyInfo__contain">
-        <Paragraph>Không tìm thấy kết quả</Paragraph>
+        <Paragraph style={{ color: 'red' }} >Không tìm thấy kết quả</Paragraph>
       </div>
     );
   }
@@ -64,7 +65,9 @@ const VocabularyInfo = ({ kanji }) => {
       <div className="VocabularyInfo__contain__info">
         <div className="VocabularyInfo__contain__kanji">
           <div className="VocabularyInfo__contain__kanji__title">
-            <Paragraph>Hán tự: {dataMazzi?.kanji} - {dataMazzi?.mean}</Paragraph>
+            <Typography variant="body1" component="div">
+              Hán tự: <span style={{ color: 'red' }}>{dataMazzi?.kanji}</span> - {dataMazzi?.mean}
+            </Typography>
           </div>
           <div className="VocabularyInfo__contain__kanji__kun">
             <Paragraph>Kunyomi: {dataMazzi?.kun}</Paragraph>
@@ -103,13 +106,13 @@ const VocabularyInfo = ({ kanji }) => {
             controls={false}
             url={data?.kanji?.video?.mp4}
           />
-          <Button className="VocabularyInfo__contain__video_replay" type="primary" onClick={handleReplay}>Vẽ lại</Button> 
-          
+          <Button className="VocabularyInfo__contain__video_replay" type="primary" onClick={handleReplay}>Vẽ lại</Button>
+
         </div>
       </div>
 
       <div className="VocabularyInfo__contain__example">
-        <Paragraph>Ví dụ: {dataMazzi?.examples?.map((example, index) => (
+        <Paragraph > <span style={{fontWeight:'bold'}}>Ví dụ:</span> {dataMazzi?.examples?.map((example, index) => (
           <div key={index}>
             <Row key={index} gutter={16}>
               <Col span={6}>

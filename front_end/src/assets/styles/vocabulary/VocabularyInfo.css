@@ -1,9 +1,12 @@
 .VocabularyInfo__contain {
-    width: 80%;
+    width: 60%;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 20px;
    }
    
    .VocabularyInfo__contain__info {

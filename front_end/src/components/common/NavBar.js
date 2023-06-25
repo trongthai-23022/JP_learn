@@ -35,10 +35,10 @@ const Navbar = () => {
           <StyledLink to="/myword">Từ vựng của tôi</StyledLink>
         </div>
         <div className="navbar__actions" style={{ marginLeft: "auto" }}>
-          <Button component={Link} to="/" color="inherit">
+          <Button component={Link} to="/signin" color="inherit">
             Đăng nhập
           </Button>
-          <Button component={Link} to="/" color="inherit">
+          <Button component={Link} to="/signup" color="inherit">
             Đăng ký
           </Button>
         </div>

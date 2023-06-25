@@ -5,7 +5,8 @@ import SeachPageDetail from './pages/SearchPageDetail/SearchPageDetail';
 import MyWord from './pages/MyWord/MyWord';
 import LessonDetail from './pages/LessonDetail/LessonDetail';
 import QuizPage from './pages/Quiz/QuizPage';
-import LoginPage from './pages/LoginPage/LoginPage';
+import SignInPage from './pages/SignInPage/SignInPage';
+import SignUpPage from './pages/SignUpPage/SignUp';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <Route path="/myword" element={<MyWord/>}/>
         <Route path="/lesson/:lessonId" element={<LessonDetail/>} />
         <Route path="/lesson/:lessonId/quiz" element={<QuizPage/>} />
-        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/signin" element={<SignInPage/>} />
+        <Route path="/signup" element={<SignUpPage/>} />
       </Routes>
     </Router>
   );
