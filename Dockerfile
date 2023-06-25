@@ -12,7 +12,7 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 # Cài đặt Python và pip
 RUN apt-get install -y python3 python3-pip
 
-RUN apt-get install -y php
+# RUN apt-get install -y php
 
 # Cài đặt Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
