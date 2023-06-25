@@ -51,7 +51,7 @@ COPY nginx/default.conf /etc/nginx/sites-available/default
 # Mở cổng
 EXPOSE 80
 
-EXPOSE 3000
+# EXPOSE 3000
 
 # Khởi động Nginx và các ứng dụng
 CMD service nginx start \
@@ -59,5 +59,5 @@ CMD service nginx start \
     # && php artisan serve --host=0.0.0.0 --port=8000 \
     # && cd /app/flask-app \
     # && python3 app.py   \
-    && cd /app/react-app \
-    && npm start
+    # && cd /app/react-app \
+    # && npm start
