@@ -13,10 +13,9 @@ return new class extends Migration {
         Schema::create('vocabularies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('japanese_word');
-            $table->string('vietnamese_definition');
-            $table->string('pronunciation');
-            $table->string('example');
-            $table->integer('level');
+            $table->string('vietnamese_word');
+            $table->json('word_info');
+            $table->string('type');
         });
     }
 

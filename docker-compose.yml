@@ -7,6 +7,4 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./back_end:/app/laravel-app
-      - ./front_end/build:/app/react-app/build
       - ./ai_server:/app/flask-app

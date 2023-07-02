@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LessonController;
 use App\Models\StudyHistory;
 use App\Models\Vocabulary;
 use Illuminate\Http\Request;
@@ -46,11 +47,11 @@ Route::controller(StudyHistory::class)->middleware('jwt.auth')->group(function()
     Route::put('study_histories/{id}', 'update');
     Route::delete('study_histories/{id}', 'destroy');
 });
-Route::controller(LessonHistory::class)->middleware('jwt.auth')->group(function(){
-    Route::get('lesson_histories', 'index');
-    Route::get('lesson_histories/{id}', 'show');
-    Route::post('lesson_histories', 'store');
-    Route::put('lesson_histories/{id}', 'update');
-    Route::delete('lesson_histories/{id}', 'destroy');
+Route::controller(LessonController::class)->middleware('jwt.auth')->group(function(){
+    Route::get('lessons', 'index');
+    Route::get('lessons/{id}', 'show');
+    Route::post('lessons', 'store');
+    Route::put('lessons/{id}', 'update');
+    Route::delete('lessons/{id}', 'destroy');
 });
 

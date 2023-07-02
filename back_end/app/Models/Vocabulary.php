@@ -11,10 +11,10 @@ class Vocabulary extends Model
     protected $table = 'vocabularies';
     protected $fillable = [
         'japanese_word',
-        'vietnamese_definition',
-        'pronunciation',
-        'example',
-        'level'
+        'vietnamese_word',
+        'word_info',
+        'type',
+
     ];
 
     public function lessons()

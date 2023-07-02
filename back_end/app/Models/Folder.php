@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lesson extends Model
+class Folder extends Model
 {
     use HasFactory;
 
-    protected $table = 'lessons';
-    
+    protected $table = 'folders';
     protected $fillable = [
         'name',
         'description',
     ];
 
-    public function vocabularies()
+    public function lessons()
     {
-        return $this->belongsToMany(Vocabulary::class, 'lesson_vocabularies');
+        return $this->belongsToMany(Lesson::class, 'folder_lessons');
     }
 }

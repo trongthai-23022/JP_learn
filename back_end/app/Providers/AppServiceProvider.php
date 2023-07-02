@@ -33,6 +33,25 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Lesson\LessonRepository::class
         );
 
+        //register LessonVocabularyRepository
+        $this->app->singleton(
+            \App\Repositories\LessonVocabulary\LessonVocabularyRepositoryInterface::class,
+            \App\Repositories\LessonVocabulary\LessonVocabularyRepository::class
+        );
+
+        //register FolderRepository
+        $this->app->singleton(
+            \App\Repositories\Folder\FolderRepositoryInterface::class,
+            \App\Repositories\Folder\FolderRepository::class
+        );
+
+        //register FolderLessonRepository
+        $this->app->singleton(
+            \App\Repositories\FolderLesson\FolderLessonRepositoryInterface::class,
+            \App\Repositories\FolderLesson\FolderLessonRepository::class
+        );
+
+
     }
 
     /**

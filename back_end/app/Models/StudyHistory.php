@@ -12,7 +12,7 @@ class StudyHistory extends Model
     protected $table = 'study_histories';
     protected $fillable = [
         'user_id',
-        'vocabulary_id',
+        'folder_id',
         'study_date'
     ];
 
@@ -21,9 +21,9 @@ class StudyHistory extends Model
         return $this->belongsTo(User::class);
     }   
 
-    public function vocabulary()
+    public function folder()
     {
-        return $this->belongsTo(Vocabulary::class);
+        return $this->belongsTo(Folder::class);
     }
 
 }

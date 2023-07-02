@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Bgr from '../../assets/images/bgr.jpg';
 import logoimg from '../../assets/images/logoEZ.png';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 function Copyright(props) {
   return (
@@ -33,14 +35,21 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -62,16 +71,21 @@ export default function SignInPage() {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            
           }}
         >
-          <div className="home-page__logo" style={{backgroundColor:'#f5dcbd', width:'100%', 
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',}}>
+          <div
+            className="home-page__logo"
+            style={{
+              backgroundColor: '#f5dcbd',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <img src={logoimg} alt="logo" />
             <p>JPLEARN</p>
-            <Typography 
+            <Typography
               variant="h3"
               sx={{
                 color: 'red',
@@ -80,13 +94,9 @@ export default function SignInPage() {
                 fontFamily: 'Roboto',
               }}
             >
-             へようこそ！
+              へようこそ！
             </Typography>
-            
           </div>
-
-          
-
         </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
@@ -104,7 +114,7 @@ export default function SignInPage() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -114,6 +124,9 @@ export default function SignInPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                {...formik.getFieldProps('email')}
+                error={formik.touched.email && formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
               />
               <TextField
                 margin="normal"
@@ -124,17 +137,15 @@ export default function SignInPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                {...formik.getFieldProps('password')}
+                error={formik.touched.password && formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>

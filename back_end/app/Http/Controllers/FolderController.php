@@ -4,29 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Repositories\Lesson\LessonRepositoryInterface;
+use App\Repositories\Folder\FolderRepositoryInterface;
 
-
-class LessonController extends Controller
+class FolderController extends Controller
 {
     //repository json
-    protected $lessonRepository;
+    protected $folderRepository;
 
-    public function __construct(LessonRepositoryInterface $lessonRepository)
+    public function __construct(FolderRepositoryInterface $folderRepository)
     {
-        $this->lessonRepository = $lessonRepository;
+        $this->folderRepository = $folderRepository;
     }
 
     public function index()
     {
-        $lessons = $this->lessonRepository->getAll();
-        return response()->json($lessons);
+        $folders = $this->folderRepository->getAll();
+        return response()->json($folders);
     }
 
     public function show($id)
     {
-        $lesson = $this->lessonRepository->find($id);
-        return response()->json($lesson);
+        $folder = $this->folderRepository->find($id);
+        return response()->json($folder);
     }
 
     public function store(Request $request)
@@ -39,8 +38,8 @@ class LessonController extends Controller
             'course_id' => 'required',
         ]);
 
-        $lesson = $this->lessonRepository->create($request->all());
-        return response()->json($lesson);
+        $folder = $this->folderRepository->create($request->all());
+        return response()->json($folder);
     }
 
     public function update(Request $request, $id)
@@ -52,14 +51,15 @@ class LessonController extends Controller
             'image' => 'required',
             'course_id' => 'required',
         ]);
-        $lesson = $this->lessonRepository->update($id, $request->all());
-        return response()->json($lesson);
+        $folder = $this->folderRepository->update($id, $request->all());
+        return response()->json($folder);
     }
 
     public function destroy($id)
     {
-        $this->lessonRepository->delete($id);
-        return response()->json(['message' => 'Lesson deleted successfully']);
+        $folder = $this->folderRepository->delete($id);
+        return response()->json($folder);
     }
 
+    
 }

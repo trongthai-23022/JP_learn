@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('study_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('vocabulary_id')->unsigned();
+            $table->integer('folder_id')->unsigned();
             $table->date('study_date');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('vocabulary_id')->references('id')->on('vocabularies');
+            $table->foreign('folder_id')->references('id')->on('folders');
         });
     }
 

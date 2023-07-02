@@ -47,11 +47,11 @@ const LessonDetail = () => {
     };
 
     const vocabularyData = [
-        { id: 1, word: 'Word 1', meaning: 'Meaning 1' },
-        { id: 2, word: 'Word 2', meaning: 'Meaning 2' },
-        { id: 3, word: 'Word 3', meaning: 'Meaning 3' },
-        { id: 4, word: 'Word 4', meaning: 'Meaning 4' },
-        { id: 5, word: 'Word 5', meaning: 'Meaning 5' },
+        { id: 1, word: '間', meaning: 'Giữa' },
+        { id: 2, word: '味', meaning: 'Gia vị' },
+        { id: 3, word: '石', meaning: 'Đá' },
+        { id: 4, word: '糸', meaning: 'Chỉ' },
+        { id: 5, word: '腕', meaning: 'Cánh tay' },
     ];
 
 
