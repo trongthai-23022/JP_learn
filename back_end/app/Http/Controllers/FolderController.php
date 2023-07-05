@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudyHistory;
 use Illuminate\Http\Request;
 use App\Repositories\Folder\FolderRepositoryInterface;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FolderController extends Controller
 {
@@ -30,15 +32,22 @@ class FolderController extends Controller
 
     public function store(Request $request)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+
         //validate dữ liệu được gửi lên
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
-            'course_id' => 'required',
         ]);
 
         $folder = $this->folderRepository->create($request->all());
+
+        //tạo thư mục mới đồng thơi tạo 1 id mới trong bảng historystudy
+        $history = new StudyHistory;
+        $history->user_id = $user->id;
+        $history->folder_id = $folder->id;
+        $history->save();
+
         return response()->json($folder);
     }
 
@@ -48,8 +57,6 @@ class FolderController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
-            'course_id' => 'required',
         ]);
         $folder = $this->folderRepository->update($id, $request->all());
         return response()->json($folder);
@@ -61,5 +68,5 @@ class FolderController extends Controller
         return response()->json($folder);
     }
 
-    
+
 }

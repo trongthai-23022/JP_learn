@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '../../components/common/NavBar';
 import { Grid, Card, CardContent, Typography, Modal } from '@mui/material';
@@ -10,6 +10,7 @@ import Quiz from '../../components/myword/Quiz';
 import './LessonDetail.css';
 import { useNavigate } from 'react-router-dom';
 import WriteTest from '../../components/myword/WriteTest';
+import api from '../../api/apiConfig';
 
 
 const LessonDetail = () => {
@@ -20,6 +21,20 @@ const LessonDetail = () => {
     const [isWriteTestModalOpen, setIsWriteTestModalOpen] = useState(false);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const navigate = useNavigate();
+
+
+    useEffect
+        (() => {    
+            const fetchLesson = async () => {
+                try {
+                    const response = await api.get(`/lessons/${lessonId}`);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error('Error fetching lesson data:', error);
+                }
+            };
+            fetchLesson();
+        }, []);
 
 
     const handleOpenWriteTestModal = () => {

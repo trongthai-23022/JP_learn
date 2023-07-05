@@ -15,7 +15,8 @@ class VocabularyController extends Controller
         $this->vocabularyRepository = $vocabularyRepository;
     }
 
-   public function index(){
+    public function index()
+    {
         $vocabularies = $this->vocabularyRepository->getAll();
         return response()->json($vocabularies);
     }
@@ -25,6 +26,17 @@ class VocabularyController extends Controller
         $vocabulary = $this->vocabularyRepository->find($id);
         return response()->json($vocabulary);
     }
+
+    //find by japannese_word
+    public function findByJapaneseWord($japanese_word)
+    {
+        $vocabulary = $this->vocabularyRepository->findByJapaneseWord($japanese_word);
+        $json = json_encode($vocabulary, JSON_UNESCAPED_UNICODE);
+        $json = str_replace('/"', '"', $json);
+        return $json;
+    }
+
+
 
     public function store(Request $request)
     {
@@ -57,5 +69,5 @@ class VocabularyController extends Controller
     {
         $this->vocabularyRepository->delete($id);
         return response()->json(['message' => 'Vocabulary deleted successfully']);
-   }
+    }
 }

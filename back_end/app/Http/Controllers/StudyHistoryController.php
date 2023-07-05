@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\StudyHistory\StudyHistoryRepositoryInterface;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class StudyHistoryController extends Controller
 {
@@ -16,11 +17,30 @@ class StudyHistoryController extends Controller
         $this->studyHistoryRepository = $studyHistoryRepository;
     }
 
-    public function index()
-    {
-        $studyHistories = $this->studyHistoryRepository->getAll();
+    //Show all Folder of this user verify with jwt
+    public function showAllStudyHistoryOfUser()
+    {   
+        //xác thực người dùng
+        $user = JWTAuth::parseToken()->authenticate();
+
+        //lay id tu token
+        $user_id = $user->id;
+
+        //get all folder (name, descrip) of this user
+
+        
+
+
+        $studyHistories = $this->studyHistoryRepository->getAllStudyHistoryOfUser($user_id);
         return response()->json($studyHistories);
     }
+
+
+    // public function index()
+    // {
+    //     $studyHistories = $this->studyHistoryRepository->getAll();
+    //     return response()->json($studyHistories);
+    // }
 
     public function show($id)
     {

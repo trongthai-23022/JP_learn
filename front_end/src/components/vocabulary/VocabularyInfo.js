@@ -6,6 +6,7 @@ import '../../assets/styles/vocabulary/VocabularyInfo.css';
 import ReactPlayer from 'react-player';
 import { useRef } from 'react';
 import Grid from '@mui/material/Grid';
+import api from '../../api/apiConfig';
 
 const VocabularyInfo = ({ kanji }) => {
   const { Paragraph } = Typography;
@@ -22,36 +23,57 @@ const VocabularyInfo = ({ kanji }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    // const fetchData = async () => {
+    //   try {
+    //     const result = await fetchKanjiData(kanji);
+    //     console.log(result);
+    //     setData(result);
+    //     if (result && result.error === 'No kanji found.') {
+    //       setIsDataNotFound(true);
+    //     } else {
+    //       setIsDataNotFound(false);
+    //     }
+    //   }
+    //   catch (error) {
+    //     console.error('Error fetching Kanji data:', error);
+    //     setIsDataNotFound(true);
+    //   }
+    // };
+    // const fetchDataMazzi = async () => {
+    //   try {
+    //     const response = await fetchMaziiData(kanji);
+    //     console.log(response.results[0]);
+    //     setDataMazzi(response.results[0]);
+
+    //   } catch (error) {
+    //     console.error('Error fetching Kanji data:', error);
+
+    //   }
+    // };
+    const fetchDataKanji = async () => {
       try {
-        const result = await fetchKanjiData(kanji);
-        console.log(result);
+        const response = await api.get(`/vocabularies/findByJapaneseWord/${kanji}`);
+        const wordInfo = response.data.word_info.replace(/\/"/g, '"');
+        const wordInfoJson = JSON.parse(wordInfo);
+        console.log(wordInfoJson);
+        setDataMazzi(wordInfoJson.mazii_data.results[0]);
+        const result = wordInfoJson.kanji_alive_data;
         setData(result);
         if (result && result.error === 'No kanji found.') {
           setIsDataNotFound(true);
         } else {
           setIsDataNotFound(false);
         }
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching Kanji data:', error);
         setIsDataNotFound(true);
       }
     };
-    const fetchDataMazzi = async () => {
-      try {
-        const response = await fetchMaziiData(kanji);
-        console.log(response.results[0]);
-        setDataMazzi(response.results[0]);
 
-      } catch (error) {
-        console.error('Error fetching Kanji data:', error);
 
-      }
-    };
-
-    fetchDataMazzi();
-    fetchData();
+    fetchDataKanji();
+    // fetchDataMazzi();
+    // fetchData();
   }, [kanji]);
   if (isDataNotFound) {
     return (
@@ -112,7 +134,7 @@ const VocabularyInfo = ({ kanji }) => {
       </div>
 
       <div className="VocabularyInfo__contain__example">
-        <Paragraph > <span style={{fontWeight:'bold'}}>Ví dụ:</span> {dataMazzi?.examples?.map((example, index) => (
+        <Paragraph > <span style={{ fontWeight: 'bold' }}>Ví dụ:</span> {dataMazzi?.examples?.map((example, index) => (
           <div key={index}>
             <Row key={index} gutter={16}>
               <Col span={6}>

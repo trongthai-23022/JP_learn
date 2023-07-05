@@ -138,7 +138,6 @@ const Search = () => {
               {/* TODO: Phần này sẽ trả về các ký tự được dự đoán */}
               <div className='search_handwriting_canvas__top__result'>
                 {displayedResults}
-                大好き
               </div>
             </div>
             <CanvasDraw

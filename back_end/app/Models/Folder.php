@@ -15,8 +15,18 @@ class Folder extends Model
         'description',
     ];
 
+    
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'folder_lessons');
+        return $this->hasManyThrough(Lesson::class, FolderLesson::class, 'folder_id', 'id', 'id', 'lesson_id');
+    }
+
+    public function studyHistories()
+    {
+        return $this->hasMany(StudyHistory::class);
+    }
+    public function folderLesson()
+    {
+        return $this->hasMany(FolderLesson::class);
     }
 }

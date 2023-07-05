@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Folder;
+use App\Models\FolderLesson;
 use Illuminate\Http\Request;
 use App\Repositories\Lesson\LessonRepositoryInterface;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LessonController extends Controller
 {
@@ -31,15 +33,30 @@ class LessonController extends Controller
 
     public function store(Request $request)
     {
+
         //validate dữ liệu được gửi lên
         $this->validate($request, [
+            'folder_id' => 'required',
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
-            'course_id' => 'required',
         ]);
 
-        $lesson = $this->lessonRepository->create($request->all());
+        
+        if (!Folder::find($request->folder_id)) {
+            return response()->json(['message' => 'Folder not found']);
+        }   
+
+        //only name and description
+        $rqlesson = $request->only('name', 'description');
+        $lesson = $this->lessonRepository->create($rqlesson);
+        $lesson->save();
+
+        $folderlesson = new FolderLesson;
+        $folderlesson->folder_id = $request['folder_id'];
+        $folderlesson->lesson_id = $lesson->id;
+        $folderlesson->save();
+
+        
         return response()->json($lesson);
     }
 
@@ -49,8 +66,6 @@ class LessonController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
-            'course_id' => 'required',
         ]);
         $lesson = $this->lessonRepository->update($id, $request->all());
         return response()->json($lesson);

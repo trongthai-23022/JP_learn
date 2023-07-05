@@ -20,4 +20,13 @@ class Lesson extends Model
     {
         return $this->belongsToMany(Vocabulary::class, 'lesson_vocabularies');
     }
+    public function folderLesson()
+    {
+        return $this->hasMany(FolderLesson::class);
+    }
+    public function lessonVocabulary()
+    {
+        return $this->hasMany(LessonVocabulary::class);
+    }
+
 }

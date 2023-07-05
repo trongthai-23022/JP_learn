@@ -13,4 +13,9 @@ class VocabularyRepository extends BaseRepository implements VocabularyRepositor
     {
         parent::__construct($model);
     }
+    //find by japannese_word
+    public function findByJapaneseWord($japanese_word)
+    {
+        return $this->model->where('japanese_word', $japanese_word)->first();
+    }
 }

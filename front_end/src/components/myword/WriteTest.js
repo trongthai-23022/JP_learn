@@ -5,14 +5,17 @@ import { RiArrowGoBackFill } from 'react-icons/ri';
 import { BiPen, BiEraser } from 'react-icons/bi';
 import '../../assets/styles/myword/Quiz.css';
 import CanvasDraw from "@win11react/react-canvas-draw";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+
 
 const WriteTest = ({ vocabularyData, handleCloseModal }) => {
+    const timeoutRef = useRef(null);
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [answer, setAnswer] = useState('');
     const [isAnswered, setIsAnswered] = useState(false);
     const [isCorrect, setIsCorrect] = useState(false);
-    const [displayedAnswers, setDisplayedAnswers] = useState([]);
     const [correctCount, setCorrectCount] = useState(0);
     const [timer, setTimer] = useState(0);
     const [finalTime, setFinalTime] = useState(0);
@@ -20,6 +23,10 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
     const canvasRef = useRef(null);
     const [showHandwriting, setShowHandwriting] = useState(false);
     const answerRef = useRef(null);
+    let result = [];
+    const [displayedResults, setDisplayedResults] = useState([]);
+    const [keyword, setKeyword] = useState("");
+
 
 
 
@@ -76,7 +83,7 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
         if (!isAnswered) {
             
             const currentQuestion = questions[currentQuestionIndex];
-            const isCorrect = currentQuestion.answer === answerRef.current.value;
+            const isCorrect = currentQuestion.answer === keyword;
             setIsCorrect(isCorrect);
             setIsAnswered(true);
             if (currentQuestionIndex >= questions.length - 1) {
@@ -93,7 +100,7 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
     const handleNextQuestion = () => {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-            answerRef.current.value = '';
+            setKeyword("");
             if(showHandwriting){
                 canvasRef.current.clear();}
             setIsAnswered(false);
@@ -119,6 +126,46 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
     const handleToggleHandwriting = () => {
         setShowHandwriting(!showHandwriting);
     };
+
+
+    const handleChangeHandwriting = () => {
+        if (canvasRef.current) {
+          clearTimeout(timeoutRef.current);
+      
+          timeoutRef.current = setTimeout(() => {
+            const imageData = canvasRef.current.canvas.drawing.toDataURL();
+            console.log(imageData);
+            const base64Data = imageData.split(',')[1];
+            const formData = new FormData();
+            formData.append('data', base64Data);
+      
+            axios.post("http://127.0.0.1:5000/model", formData)
+              .then(response => {
+                // Xử lý kết quả từ API trả về
+                const result = response.data.Kanji;
+                console.log(result);
+                const displayedResults = result.map((item, i) => (
+                  <span
+                    className="result-item"
+                    onClick={() => setKeyword(item)}
+                    key={i}
+                  >
+                    {item}
+                  </span>
+                ));
+                setDisplayedResults(displayedResults);
+              })
+              .catch(error => {
+                // Xử lý lỗi nếu có
+                console.error(error);
+              });
+          }, 1000);
+        }
+      };
+
+     const handleKeywordChange =  (e) => {  
+        setKeyword(e.target.value);
+        };
 
     return (
         <Box p={2} height="100%" sx={{
@@ -173,7 +220,8 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
                                     label="Đáp án"
                                     variant="outlined"
                                     fullWidth
-                                    inputRef={answerRef}
+                                    value={keyword}
+                                    onChange={handleKeywordChange}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -200,7 +248,7 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
                                             <button onClick={handleClearButtonClick} className="search_handwriting_canvas__top__button"><BiEraser /></button>
                                             {/* TODO: Phần này sẽ trả về các ký tự được dự đoán */}
                                             <div className='search_handwriting_canvas__top__result'>
-                                                Kí tự được trả về
+                                                {displayedResults}
                                             </div>
                                         </div>
                                         <CanvasDraw
@@ -211,7 +259,7 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
                                             canvasHeight="200px"
                                             brushRadius={3}
                                             lazyRadius={0}
-
+                                            onChange={handleChangeHandwriting}
                                             backgroundColor="#ffffff"
                                             hideGrid={true}
                                         />

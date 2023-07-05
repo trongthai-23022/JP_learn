@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'test']]);
+        // $this->middleware('auth:api', ['except' => ['login', 'register', 'test']]);
     }
 
 
@@ -35,22 +35,24 @@ class AuthController extends Controller
             return response()->json(['error' => 'invalid_credentials'], 401);
         }
 
+
+
         $user = Auth::user();
         return response()->json([
             'status' => 'success',
             'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60 // Thời gian hết hạn của token JWT tính bằng giây
         ]);
     }
 
     public function logout()
     {
-        Auth::logout();
+        // Xóa token khỏi CSDL
+        JWTAuth::invalidate(JWTAuth::getToken());
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Đăng xuất thành công']);
     }
 
     public function register(Request $request)
@@ -65,21 +67,28 @@ class AuthController extends Controller
 
         return response()->json(compact('user', 'token'), 201);
     }
-    public function refresh()
+    public function refresh(Request $request)
     {
-        $token = JWTAuth::getToken();
+        // Lấy Refresh Token từ yêu cầu
+        $refreshToken = $request->input('refresh_token');
 
-        if (!$token) {
-            return response()->json(['error' => 'token_not_provided'], 401);
+        // Kiểm tra tính hợp lệ của Refresh Token
+        if (!$refreshToken) {
+            return response()->json(['error' => 'refresh_token_required'], 400);
         }
 
         try {
-            $refreshed_token = JWTAuth::refresh($token);
+            // Refresh token
+            $newToken = JWTAuth::refresh($refreshToken);
+
+            return response()->json([
+                'access_token' => $newToken,
+                'token_type' => 'bearer',
+                'expires_in' => JWTAuth::factory()->getTTL() * 60
+            ]);
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_refresh_token'], 500);
         }
-
-        return response()->json(compact('refreshed_token'));
     }
 
     public function test()

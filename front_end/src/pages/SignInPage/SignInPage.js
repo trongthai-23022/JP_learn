@@ -16,6 +16,13 @@ import Bgr from '../../assets/images/bgr.jpg';
 import logoimg from '../../assets/images/logoEZ.png';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuth, login } from '../../store/authSlice';
+import { setAuthToken } from '../../api/apiConfig';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { setFieldError } from 'formik';
+import './SignInPage.css';
 
 function Copyright(props) {
   return (
@@ -30,11 +37,30 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignInPage() {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+  const error = useSelector((state) => state.auth.error);
+  const Navigate = useNavigate();
+
+  useEffect(() => {
+    // Xóa token khi trang đăng nhập được hiển thị
+    setAuthToken('');
+  }, []);
+
+  useEffect(() => {
+    const authCheck = async () => {
+      const shouldRedirect = await dispatch(checkAuth());
+      if (shouldRedirect) {
+        Navigate('/'); // Chuyển hướng đến trang chính  
+      }
+    };
+
+    authCheck();
+  }, [dispatch]);
+
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
@@ -46,9 +72,26 @@ export default function SignInPage() {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, { setSubmitting, setFieldError }) => {
+      try {
+        const result = await dispatch(login(values));
+        console.log(result);
+        if (result.payload?.error) {
+          console.log(result.payload.error.message);
+          // Xử lý lỗi đăng nhập
+          setFieldError('error', 'Invalid email or password'); // Đặt giá trị lỗi trong trường error
+        } else {
+          Navigate('/'); // Chuyển hướng đến trang home
+        }
+      } catch (error) {
+        console.log(error);
+        // Xử lý lỗi đăng nhập
+        setFieldError('error', 'An error occurred'); // Đặt giá trị lỗi trong trường error
+      } finally {
+        setSubmitting(false);
+      }
     },
+
   });
 
   return (
@@ -141,13 +184,22 @@ export default function SignInPage() {
                 error={formik.touched.password && formik.errors.password}
                 helperText={formik.touched.password && formik.errors.password}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Sign In
+
+              <div className={`error ${formik.errors.error ? 'error-visible' : ''}`}>
+                {formik.errors.error}
+              </div>
+
+
+              <Button
+                type="submit"
+                disabled={loading}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                {loading ? 'Loading...' : 'Sign In'}
               </Button>
+
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
