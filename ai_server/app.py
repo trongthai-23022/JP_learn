@@ -36,13 +36,12 @@ def predict():
             for image in img:
                 results = ""
                 for c in image:
-                    c = abs(255 - c)
+                    # c = abs(255 - c)
                     result = model.predict(c.reshape(1, 64, 64, 1))
                     label = Labels.labels[np.argmax(result)]               
                     results+=label
                 response.append(results)
-            
-            response.reverse()
+                       
             return jsonify({"Kanji":response[0:]})
         except Exception as e:
             return jsonify(e)
