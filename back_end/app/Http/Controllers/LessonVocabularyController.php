@@ -22,6 +22,13 @@ class LessonVocabularyController extends Controller
         return response()->json($lessonVocabularies);
     }
 
+    //show all vocabulary of this lesson
+    public function showAllVocabularyOfLesson($id)
+    {
+        $lessonVocabularies = $this->lessonVocabularyRepository->getAllVocabularyOfLesson($id);
+        return response()->json($lessonVocabularies);
+    }
+
     public function show($id)
     {
         $lessonVocabulary = $this->lessonVocabularyRepository->find($id);
@@ -54,6 +61,11 @@ class LessonVocabularyController extends Controller
     public function destroy($id)
     {
         $lessonVocabulary = $this->lessonVocabularyRepository->delete($id);
+        return response()->json($lessonVocabulary);
+    }
+    public function deleteVocabularyOfLesson($lesson_id, $vocabulary_id)
+    {
+        $lessonVocabulary = $this->lessonVocabularyRepository->deleteVocabularyOfLesson($lesson_id, $vocabulary_id);
         return response()->json($lessonVocabulary);
     }
 }

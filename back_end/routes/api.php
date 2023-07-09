@@ -83,6 +83,8 @@ Route::controller(LessonVocabularyController::class)->middleware('jwt.auth')->gr
     Route::post('lesson_vocabularies', 'store');
     Route::put('lesson_vocabularies/{id}', 'update');
     Route::delete('lesson_vocabularies/{id}', 'destroy');
+    Route::delete('lesson_vocabularies/lesson/{lesson_id}/{vocabulary_id}', 'deleteVocabularyOfLesson');
+    Route::post('lesson_vocabularies/{id}', 'showAllVocabularyOfLesson');
 });
 
 

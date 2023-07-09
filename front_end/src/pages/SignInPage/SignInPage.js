@@ -62,8 +62,8 @@ export default function SignInPage() {
   }, [dispatch]);
 
   const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    email: Yup.string().email('Địa chỉ email không hợp lệ').required('Yêu cầu nhập email'),
+    password: Yup.string().required('Yêu cầu nhập mật khẩu'),
   });
 
   const formik = useFormik({
@@ -79,14 +79,14 @@ export default function SignInPage() {
         if (result.payload?.error || result.error) {
           console.log(result.payload.error);
           // Xử lý lỗi đăng nhập
-          setFieldError('error', 'Invalid email or password'); // Đặt giá trị lỗi trong trường error
+          setFieldError('error', 'Email và mật khẩu không hợp lệ'); // Đặt giá trị lỗi trong trường error
         } else {
           Navigate('/'); // Chuyển hướng đến trang home
         }
       } catch (error) {
         console.log(error);
         // Xử lý lỗi đăng nhập
-        setFieldError('error', 'An error occurred'); // Đặt giá trị lỗi trong trường error
+        setFieldError('error', 'Đã có lỗi xảy ra'); // Đặt giá trị lỗi trong trường error
       } finally {
         setSubmitting(false);
       }
@@ -155,7 +155,7 @@ export default function SignInPage() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Đăng nhập
             </Typography>
             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
               <TextField
@@ -163,7 +163,7 @@ export default function SignInPage() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Địa chỉ email"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -176,7 +176,7 @@ export default function SignInPage() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Mật khẩu"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -201,14 +201,10 @@ export default function SignInPage() {
               </Button>
 
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
+                
                 <Grid item>
                   <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    {"Bạn chưa có tài khoản? Đăng ký"}
                   </Link>
                 </Grid>
               </Grid>

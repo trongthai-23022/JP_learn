@@ -14,9 +14,12 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import api from '../../api/apiConfig';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 function SignUpPage() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -29,9 +32,13 @@ function SignUpPage() {
 
     api.post('/register', userData)
       .then(response => {
+        const  access_token  = response.data.token;
+        localStorage.setItem('jwtToken', access_token);
         // Xử lý phản hồi thành công từ backend
-        console.log(response.data);
-        Navigate('/');
+        console.log("Thành công",access_token);
+        //save token
+        
+        navigate('/');
       })
       .catch(error => {
         // Xử lý lỗi từ backend
@@ -55,7 +62,7 @@ function SignUpPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Đăng ký 
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -66,7 +73,7 @@ function SignUpPage() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="Họ"
                   autoFocus
                 />
               </Grid>
@@ -75,7 +82,7 @@ function SignUpPage() {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Tên"
                   name="lastName"
                   autoComplete="family-name"
                 />
@@ -85,7 +92,7 @@ function SignUpPage() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Địa chỉ email"
                   name="email"
                   autoComplete="email"
                 />
@@ -95,7 +102,7 @@ function SignUpPage() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Mật khẩu"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -109,12 +116,12 @@ function SignUpPage() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Đăng ký
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
+                  Bạn đã có tài khoản? Đăng nhập
                 </Link>
               </Grid>
             </Grid>

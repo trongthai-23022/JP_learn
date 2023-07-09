@@ -4,7 +4,12 @@ import { ArrowBack } from "@mui/icons-material";
 
 const FlashCard = ({ vocabularyData, handleCloseModal }) => {
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
-    const flashCard = vocabularyData[currentCardIndex];
+
+    let flashCard = vocabularyData[currentCardIndex];
+    if (typeof flashCard.word_info === 'string') {
+        flashCard.word_info = JSON.parse(flashCard.word_info);
+    }
+
     const [isFront, setIsFront] = useState(true);
 
     const handleNextCard = () => {
@@ -72,8 +77,9 @@ const FlashCard = ({ vocabularyData, handleCloseModal }) => {
                         // Thêm translateZ ở đây
                     }}
                 >
-                    <Typography variant="h6">{flashCard.word}</Typography>
-                    
+                    <Typography variant="h4" sx={{ color: 'red' }}>{flashCard.japanese_word}</Typography>
+
+
                 </Box>
                 <Box
                     sx={{
@@ -91,9 +97,19 @@ const FlashCard = ({ vocabularyData, handleCloseModal }) => {
                         transform: "rotateY(180deg) translateZ(0)", // Thêm translateZ ở đây
                     }}
                 >
-                    <Typography variant="body1">{flashCard.meaning}</Typography>
-                    
+                    <Typography variant="h5" noWrap style={{ maxWidth: '100%', textAlign: 'center' }}>{flashCard.vietnamese_word}</Typography>
+                    {flashCard.type === "Kanji" && (
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}><Typography variant="h6" sx={{ color: 'red' }}>{flashCard.word_info?.mazii_data?.results[0].on}</Typography>
+                            <Typography variant="h6" sx={{ color: 'blue' }}>{flashCard.word_info?.mazii_data?.results[0].kun}</Typography></Box>
+
+                    )}
                 </Box>
+
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 4, marginTop: "20px", }
             }>

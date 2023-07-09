@@ -41,31 +41,31 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
     }, []);
 
     useEffect(() => {
-        
+
         // Shuffle the vocabulary data
         const shuffledData = shuffleArray(vocabularyData);
 
         // Take the first 5 shuffled items as questions
         const selectedQuestions = shuffledData.slice(0, 10);
-        
+
         // Generate random answers for each question
         const processedQuestions = selectedQuestions.map(question => {
-            const correctAnswer = question.word;
-          
+            const correctAnswer = question.japanese_word;
+
             return {
-              question: question.word,
-              answer: correctAnswer,
+                question: question.japanese_word,
+                answer: correctAnswer,
             };
-          });
-          
-          setQuestions(processedQuestions);
-          
+        });
+
+        setQuestions(processedQuestions);
+
     }, [vocabularyData]);
 
     useEffect(() => {
         if (currentQuestionIndex < questions.length) {
             const currentQuestion = questions[currentQuestionIndex];
-            
+
         }
     }, [currentQuestionIndex, questions]);
 
@@ -81,9 +81,14 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
 
     const handleAnswerSelect = answer => {
         if (!isAnswered) {
-            
             const currentQuestion = questions[currentQuestionIndex];
-            const isCorrect = currentQuestion.answer === keyword;
+            let keyword2 = currentQuestion.answer;
+            if (keyword2 !== "") {
+                keyword2 = currentQuestion.answer.replace(/ 「.*?」/g, '');
+            }
+            console.log(keyword2);
+            console.log(keyword);
+            const isCorrect = keyword2 === keyword;
             setIsCorrect(isCorrect);
             setIsAnswered(true);
             if (currentQuestionIndex >= questions.length - 1) {
@@ -101,8 +106,9 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(prevIndex => prevIndex + 1);
             setKeyword("");
-            if(showHandwriting){
-                canvasRef.current.clear();}
+            if (showHandwriting) {
+                canvasRef.current.clear();
+            }
             setIsAnswered(false);
             setIsCorrect(false);
 
@@ -130,42 +136,42 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
 
     const handleChangeHandwriting = () => {
         if (canvasRef.current) {
-          clearTimeout(timeoutRef.current);
-      
-          timeoutRef.current = setTimeout(() => {
-            const imageData = canvasRef.current.canvas.drawing.toDataURL();
-            console.log(imageData);
-            const base64Data = imageData.split(',')[1];
-            const formData = new FormData();
-            formData.append('data', base64Data);
-      
-            axios.post("http://127.0.0.1:5000/model", formData)
-              .then(response => {
-                // Xử lý kết quả từ API trả về
-                const result = response.data.Kanji;
-                console.log(result);
-                const displayedResults = result.map((item, i) => (
-                  <span
-                    className="result-item"
-                    onClick={() => setKeyword(item)}
-                    key={i}
-                  >
-                    {item}
-                  </span>
-                ));
-                setDisplayedResults(displayedResults);
-              })
-              .catch(error => {
-                // Xử lý lỗi nếu có
-                console.error(error);
-              });
-          }, 1000);
-        }
-      };
+            clearTimeout(timeoutRef.current);
 
-     const handleKeywordChange =  (e) => {  
+            timeoutRef.current = setTimeout(() => {
+                const imageData = canvasRef.current.canvas.drawing.toDataURL();
+                console.log(imageData);
+                const base64Data = imageData.split(',')[1];
+                const formData = new FormData();
+                formData.append('data', base64Data);
+
+                axios.post("http://127.0.0.1:5000/model", formData)
+                    .then(response => {
+                        // Xử lý kết quả từ API trả về
+                        const result = response.data.Kanji;
+                        console.log(result);
+                        const displayedResults = result.map((item, i) => (
+                            <span
+                                className="result-item"
+                                onClick={() => setKeyword(item)}
+                                key={i}
+                            >
+                                {item}
+                            </span>
+                        ));
+                        setDisplayedResults(displayedResults);
+                    })
+                    .catch(error => {
+                        // Xử lý lỗi nếu có
+                        console.error(error);
+                    });
+            }, 1000);
+        }
+    };
+
+    const handleKeywordChange = (e) => {
         setKeyword(e.target.value);
-        };
+    };
 
     return (
         <Box p={2} height="100%" sx={{
@@ -205,7 +211,7 @@ const WriteTest = ({ vocabularyData, handleCloseModal }) => {
                         {currentQuestionIndex < questions.length && (
                             <Card variant="outlined" style={{ height: `300px`, display: `flex`, justifyContent: `center`, boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
                                 <CardContent style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <Typography variant="h6">{questions[currentQuestionIndex].question}</Typography>
+                                    <Typography variant="h4" sx={{color:'red'}}>{questions[currentQuestionIndex].question}</Typography>
                                 </CardContent>
                             </Card>
                         )}

@@ -35,7 +35,7 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
 
         // Generate random answers for each question
         const processedQuestions = selectedQuestions.map(question => {
-            const correctAnswer = question.meaning;
+            const correctAnswer = question.vietnamese_word;
             const incorrectOptions = generateIncorrectOptions(vocabularyData, correctAnswer, 3);
             const allOptions = shuffleArray([correctAnswer, ...incorrectOptions]);
 
@@ -65,9 +65,9 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
     };
 
     const generateIncorrectOptions = (data, correctAnswer, count) => {
-        const filteredData = data.filter(item => item.meaning !== correctAnswer);
+        const filteredData = data.filter(item => item.vietnamese_word !== correctAnswer);
         const shuffledData = shuffleArray(filteredData);
-        return shuffledData.slice(0, count).map(item => item.meaning);
+        return shuffledData.slice(0, count).map(item => item.vietnamese_word);
     };
 
     const handleAnswerSelect = answer => {
@@ -75,10 +75,10 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
         if (!isAnswered) {
             setSelectedAnswer(answer);
             const currentQuestion = questions[currentQuestionIndex];
-            const isCorrect = currentQuestion.meaning === answer;
+            const isCorrect = currentQuestion.vietnamese_word === answer;
             setIsCorrect(isCorrect);
             setIsAnswered(true);
-            if(currentQuestionIndex >= questions.length - 1 ){
+            if (currentQuestionIndex >= questions.length - 1) {
                 setIsQuizCompleted(true);
                 setFinalTime(timer);
             }
@@ -96,14 +96,14 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
             setSelectedAnswer('');
             setIsAnswered(false);
             setIsCorrect(false);
-            
+
         } else {
             //If completed all questions, close the modal
-            
+
             handleCloseModal();
 
         }
-        
+
     };
 
     return (
@@ -142,9 +142,9 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
                             Câu hỏi {currentQuestionIndex + 1} / {questions.length}:
                         </Typography>
                         {currentQuestionIndex < questions.length && (
-                            <Card variant="outlined"  style={{ height: `500px`, display: `flex`, justifyContent: `center`, boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
+                            <Card variant="outlined" style={{ height: `500px`, display: `flex`, justifyContent: `center`, boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
                                 <CardContent style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <Typography variant="h6">{questions[currentQuestionIndex].word}</Typography>
+                                    <Typography variant="h4" sx={{ color: 'red' }}>{questions[currentQuestionIndex].japanese_word}</Typography>
                                 </CardContent>
                             </Card>
                         )}
@@ -167,7 +167,7 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
                                             }`}
                                     >
                                         <CardContent>
-                                            <Typography variant="body1">{answer}</Typography>
+                                            <Typography variant="body1" noWrap style={{ maxWidth: '100%' }}>{answer}</Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
@@ -191,7 +191,7 @@ const Quiz = ({ vocabularyData, handleCloseModal }) => {
                                         Tiếp theo
                                     </Button>
                                 ) : (
-                                    
+
                                     <Button variant="contained" color="secondary" onClick={handleNextQuestion}>
                                         Hoàn thành
                                     </Button>
