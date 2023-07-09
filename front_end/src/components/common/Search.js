@@ -8,15 +8,17 @@ import { RiArrowGoBackFill } from "react-icons/ri";
 import { AiOutlineEdit, AiOutlineCloseCircle } from "react-icons/ai";
 import axios from "axios";
 
+
 const Search = () => {
   const [keyword, setKeyword] = useState("");
-  const [searchType, setSearchType] = useState("japanese-to-vietnamese");
+  const [searchType, setSearchType] = useState("jp-vn");
   const [suggestions, setSuggestions] = useState([]);
   const [showHandwriting, setShowHandwriting] = useState(false);
   const canvasRef = useRef(null);
   const timeoutRef = useRef(null);
   let result = [];
   const [displayedResults, setDisplayedResults] = useState([]);
+
 
   const navigate = useNavigate();
 
@@ -33,11 +35,11 @@ const Search = () => {
   const handleSearchClick = () => {
     // TODO: dispatch search action with keyword and searchType
     if (keyword === "") return;
-    navigate(`/search/detail/${keyword}`);
+    navigate(`/search/detail/${searchType}/${keyword}`);
   };
   const keyPressEnter = (e) => {
     if ((e.key === 'Enter') & (keyword !== '')) {
-      navigate(`/search/detail/${keyword}`);
+      navigate(`/search/detail/${searchType}/${keyword}`);
     }
   };
 
@@ -96,8 +98,8 @@ const Search = () => {
     <div className="search_container">
       <div className="search__type">
         <select value={searchType} onChange={handleSearchTypeChange}>
-          <option value="japanese-to-vietnamese">Nhật-Việt</option>
-          <option value="vietnamese-to-japanese">Việt-Nhật</option>
+          <option value="jp-vn">Nhật-Việt</option>
+          <option value="vn-jp">Việt-Nhật</option>
         </select>
       </div>
       <div className="search">
@@ -105,6 +107,7 @@ const Search = () => {
 
           <input
             type="text"
+            style={{fontSize: '18px'}}
             placeholder="Tìm kiếm"
             value={keyword}
             onChange={handleKeywordChange}

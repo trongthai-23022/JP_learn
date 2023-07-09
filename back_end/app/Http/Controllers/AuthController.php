@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:api', ['except' => ['login', 'register', 'test']]);
+        $this->middleware('auth:api')->except(['login', 'refresh','register']);
     }
 
 
@@ -35,16 +35,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'invalid_credentials'], 401);
         }
 
-
-
-        $user = Auth::user();
-        return response()->json([
-            'status' => 'success',
-            'user' => $user,
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60 // Thời gian hết hạn của token JWT tính bằng giây
-        ]);
+        return response()->json(['access_token' => $token]);
     }
 
     public function logout()
@@ -69,30 +60,22 @@ class AuthController extends Controller
     }
     public function refresh(Request $request)
     {
-        // Lấy Refresh Token từ yêu cầu
-        $refreshToken = $request->input('refresh_token');
-
-        // Kiểm tra tính hợp lệ của Refresh Token
-        if (!$refreshToken) {
-            return response()->json(['error' => 'refresh_token_required'], 400);
-        }
+        $refreshToken = $request->header('Authorization');
 
         try {
-            // Refresh token
             $newToken = JWTAuth::refresh($refreshToken);
 
-            return response()->json([
-                'access_token' => $newToken,
-                'token_type' => 'bearer',
-                'expires_in' => JWTAuth::factory()->getTTL() * 60
-            ]);
+            return response()->json(['access_token' => $newToken]);
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_refresh_token'], 500);
         }
     }
 
-    public function test()
+    public function me()
     {
-        return response()->json(['message' => 'Hello World!']);
+        $user = Auth::user();
+        return response()->json(['user' => $user]);
     }
+
+
 }

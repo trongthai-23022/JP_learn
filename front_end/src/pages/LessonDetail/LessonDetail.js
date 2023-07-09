@@ -76,7 +76,7 @@ const LessonDetail = () => {
             <Navbar />
             <div className="container">
                 <Typography variant="h3" gutterBottom>
-                    Tên lesson
+                    Bài học
                 </Typography>
 
                 <Grid container spacing={2}>

@@ -5,12 +5,7 @@ import { useDispatch } from 'react-redux';
 import { checkAuth } from '../store/authSlice';
 
 const PrivateRoute = ({ children }) => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        
-        dispatch(checkAuth());
-      }, [dispatch]);
-  const isAuthenticated = useSelector((state) => state.auth.loggedIn);
+  const isAuthenticated = localStorage.getItem('jwtToken') !== null;
   const location = useLocation();
 
   if (isAuthenticated) {

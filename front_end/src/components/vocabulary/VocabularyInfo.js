@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { fetchMaziiData } from '../../api/mazii.js';
 import { fetchKanjiData } from '../../api/kanji.js';
 import { Image, List, Row, Col, Table, Typography, Button } from 'antd';
+import { Modal, Box } from "@mui/material";
 import '../../assets/styles/vocabulary/VocabularyInfo.css';
 import ReactPlayer from 'react-player';
 import { useRef } from 'react';
 import Grid from '@mui/material/Grid';
 import api from '../../api/apiConfig';
+import Tree from './Tree';
 
 const VocabularyInfo = ({ kanji }) => {
   const { Paragraph } = Typography;
@@ -15,6 +17,12 @@ const VocabularyInfo = ({ kanji }) => {
   const playerRef = useRef(null);
   const [replay, setReplay] = useState(false);
   const [isDataNotFound, setIsDataNotFound] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wordMean, setWordMean] = useState(null);
+  const token = localStorage.getItem('jwtToken');
+
+
+
 
   const handleReplay = () => {
     setReplay(true);
@@ -52,7 +60,8 @@ const VocabularyInfo = ({ kanji }) => {
     // };
     const fetchDataKanji = async () => {
       try {
-        const response = await api.get(`/vocabularies/findByJapaneseWord/${kanji}`);
+        const response = await api.get(`/vocabularies/findByJapaneseWord/kanji/${kanji}`);
+        setWordMean(response.data);
         const wordInfo = response.data.word_info.replace(/\/"/g, '"');
         const wordInfoJson = JSON.parse(wordInfo);
         console.log(wordInfoJson);
@@ -75,6 +84,29 @@ const VocabularyInfo = ({ kanji }) => {
     // fetchDataMazzi();
     // fetchData();
   }, [kanji]);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAddWordLesson = (lesson) => {
+    console.log(lesson);
+    console.log(wordMean);
+    api.post('/lesson_vocabularies', { lesson_id: lesson.id, vocabulary_id: wordMean.id })
+      .then((response) => {
+        console.log(response.data);
+      }
+      )
+      .catch((error) => {
+        console.error('Error adding word to lesson:', error);
+      }
+      );
+  }
+
   if (isDataNotFound) {
     return (
       <div className="VocabularyInfo__contain">
@@ -83,13 +115,14 @@ const VocabularyInfo = ({ kanji }) => {
     );
   }
   return (
-    <div className="VocabularyInfo__contain">
+    <div className="VocabularyInfo__contain" style={{ position: 'relative' }}>
       <div className="VocabularyInfo__contain__info">
         <div className="VocabularyInfo__contain__kanji">
           <div className="VocabularyInfo__contain__kanji__title">
-            <Typography variant="body1" component="div">
-              Hán tự: <span style={{ color: 'red' }}>{dataMazzi?.kanji}</span> - {dataMazzi?.mean}
-            </Typography>
+              <Typography variant="body1" component="div">
+                Hán tự: <span style={{ color: 'red' }}>{dataMazzi?.kanji}</span> - {dataMazzi?.mean}
+              </Typography>
+              
           </div>
           <div className="VocabularyInfo__contain__kanji__kun">
             <Paragraph>Kunyomi: {dataMazzi?.kun}</Paragraph>
@@ -118,6 +151,7 @@ const VocabularyInfo = ({ kanji }) => {
 
 
         <div className='VocabularyInfo__contain__video'>
+          
           <ReactPlayer
             ref={playerRef}
             width="100%"
@@ -154,6 +188,34 @@ const VocabularyInfo = ({ kanji }) => {
         ))}
         </Paragraph>
       </div>
+      <Modal open={isModalOpen} onClose={handleModalClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: '80%',
+            height: '80%',
+            bgcolor: "#dadde7",
+            boxShadow: 24,
+            borderRadius: '10px',
+            p: 4
+          }}
+        ><Tree handleCloseModal={handleModalClose} handleSave={handleAddWordLesson} />
+
+        </Box>
+
+      </Modal>
+      <Button
+        type="primary"
+        onClick={handleModalOpen}
+        style={{ position: 'absolute', top: 0, right: 0, marginTop: '16px', marginRight: '16px' }}
+        disabled={!token}
+      
+      >
+        +
+      </Button>
     </div>
   );
 };

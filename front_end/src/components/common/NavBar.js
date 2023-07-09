@@ -24,21 +24,14 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Navbar = () => {
-  const loggedIn = useSelector(state => state.auth.loggedIn);
-  const user = useSelector(state => state.auth.user);
-  const dispatch = useDispatch();
+const Navbar = (user) => {
 
-
-  useEffect(() => {
-    dispatch(restoreAuthState());
-  }, [dispatch]);
-  
+  console.log(user);
   const logout = () => {
     localStorage.removeItem('jwtToken');
-    dispatch(restoreAuthState());
     //reload lại trang
     window.location.reload();
+
 
   };
 
@@ -52,11 +45,11 @@ const Navbar = () => {
         </div>
         <div className="navbar__links">
           <StyledLink to="/">Tra cứu</StyledLink>
-          <StyledLink to="/myword">Từ vựng của tôi</StyledLink>
+          <StyledLink to="/myword/0">Từ vựng của tôi</StyledLink>
         </div>
 
         <div className="navbar__actions" style={{ marginLeft: "auto" }}>
-          {loggedIn ? (
+          {user.user!==null ? (
             <>
               <span style={{ marginRight: "10px" }}>{user?.name}</span>
               <Button  color="inherit" onClick={logout}>

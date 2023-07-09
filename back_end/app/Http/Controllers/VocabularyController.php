@@ -28,9 +28,9 @@ class VocabularyController extends Controller
     }
 
     //find by japannese_word
-    public function findByJapaneseWord($japanese_word)
+    public function findByJapaneseWord($type,$japanese_word)
     {
-        $vocabulary = $this->vocabularyRepository->findByJapaneseWord($japanese_word);
+        $vocabulary = $this->vocabularyRepository->findByJapaneseWord($japanese_word,$type);
         $json = json_encode($vocabulary, JSON_UNESCAPED_UNICODE);
         $json = str_replace('/"', '"', $json);
         return $json;

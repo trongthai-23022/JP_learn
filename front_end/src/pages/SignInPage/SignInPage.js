@@ -76,8 +76,8 @@ export default function SignInPage() {
       try {
         const result = await dispatch(login(values));
         console.log(result);
-        if (result.payload?.error) {
-          console.log(result.payload.error.message);
+        if (result.payload?.error || result.error) {
+          console.log(result.payload.error);
           // Xử lý lỗi đăng nhập
           setFieldError('error', 'Invalid email or password'); // Đặt giá trị lỗi trong trường error
         } else {

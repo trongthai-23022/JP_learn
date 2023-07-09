@@ -40,8 +40,8 @@ function App() {
       {isAuthReady && (
         <Routes>
           <Route exact path="/" element={<HomePage />} />
-          <Route path="/search/detail/:kanji" element={<SearchPageDetail />} />
-          <Route path="/myword" element={<PrivateRoute><MyWord /></PrivateRoute>} />
+          <Route path="/search/detail/:searchtype/:word" element={<SearchPageDetail />} />
+          <Route path="/myword/:idfolder" element={<PrivateRoute><MyWord /></PrivateRoute>} />
           <Route path="/lesson/:lessonId" element={<LessonDetail />} />
           <Route path="/lesson/:lessonId/quiz" element={<QuizPage />} />
           <Route path="/signin" element={<SignInPage />} />

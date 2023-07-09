@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "../../components/common/NavBar";
-import { Grid, Card, CardContent, Typography, IconButton, Button } from "@mui/material";
+import { Grid, Card, CardContent, Typography, IconButton, Button, Box } from "@mui/material";
 import { Edit, Delete, Add } from "@mui/icons-material";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import "./MyWord.css";
 import api from "../../api/apiConfig";
 import { useEffect } from "react";
@@ -15,34 +15,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 
 const MyWord = () => {
+    const { idfolder } = useParams();
     const navigate = useNavigate();
     // State để lưu trữ thư mục và các lesson tương ứng
 
     const [open, setOpen] = useState(false);
     const [reloadData, setReloadData] = useState(false);
     const [selectedFolder, setSelectedFolder] = useState(null);
-    const [selectedLesson, setSelectedLesson] = useState(null);
-   
+    const [selectedLesson, setSelectedLesson] = useState();
+
 
     const [folders, setFolders] = useState([
-        {
-            name: "Thư mục 1",
-            description: "Mô tả thư mục 1",
-            lessons: [
-                { id: "lesson1", name: "Lesson 1", description: "Mô tả lesson 1" },
-                { id: "lesson2", name: "Lesson 2", description: "Mô tả lesson 2" },
-                { id: "lesson3", name: "Lesson 3", description: "Mô tả lesson 3" },
-            ],
-        },
-        {
-            name: "Thư mục 2",
-            description: "Mô tả thư mục 2",
-            lessons: [
-                { id: "lesson4", name: "Lesson 4", description: "Mô tả lesson 4" },
-                { id: "lesson5", name: "Lesson 5", description: "Mô tả lesson 5" },
-            ],
-        },
-        { name: "Thư mục 3", description: "Mô tả thư mục 3", lessons: [] },
     ]);
 
     //fetch data from api
@@ -53,30 +36,40 @@ const MyWord = () => {
                 const response = await api.post(`/study_histories/1`);
                 console.log(response.data);
                 setFolders(response.data);
+                //set selected folder = folder have id = Idfolder
+                if (idfolder) {
+                    const folder = response.data.find(folder => folder.id === parseInt(idfolder));
+                    setSelectedFolder(folder);
+                }
+
             } catch (error) {
                 console.log(error);
+                if (error.response === 401) {
+                    navigate('/signin');
+                }
             } finally {
 
             }
         };
         fetchData();
-        
-       
+
+
         if (reloadData) {
-            
+
             // Đánh dấu là đã tải lại dữ liệu
             setReloadData(false); // Đánh dấu là đã tải lại dữ liệu
-            
+
         }
     }, [reloadData]);
 
 
 
     // State để lưu trữ thư mục được chọn
-    
+
 
     // Hàm xử lý sự kiện khi click vào thư mục
     const handleFolderClick = (folder) => {
+        navigate(`/myword/${folder.id}`);
         setSelectedFolder(folder);
     };
 
@@ -104,7 +97,7 @@ const MyWord = () => {
                 console.error('Lỗi khi tạo thư mục mới:', error);
                 // Unauthorized
                 if (error.response === 401) {
-                    Navigate('/signin');
+                    navigate('/signin');
                 }
             }
             );
@@ -124,11 +117,12 @@ const MyWord = () => {
                 folder_id: id,
                 name: newLesson.name,
                 description: newLesson.description,
-    
+
             })
-                .then(response =>{
+                .then(response => {
                     console.log(response.data);
                     setReloadData(true);
+                    navigate(`/myword/${selectedFolder.id}`);
 
                 })
                 .catch(error => {
@@ -136,7 +130,7 @@ const MyWord = () => {
                     console.error('Lỗi khi tạo thư mục mới:', error);
                     // Unauthorized
                     if (error.response === 401) {
-                        Navigate('/signin');
+                        navigate('/signin');
                     }
                 }
                 );
@@ -149,17 +143,21 @@ const MyWord = () => {
     };
 
 
-    
-    const [IdEit,setIdEdit] = useState(null);
 
-    const handleEditFolder = (id) => {
+    const [IdEit, setIdEdit] = useState(null);
+
+    const handleEditFolder = (folder) => {
         console.log("Edit folder");
+        setFolderName(folder.name);
+        setFolderDescription(folder.description);
         setOpen(true);
     };
-    const handleEditLesson  = (id) => {
+    const handleEditLesson = (lesson) => {
         console.log("Edit lesson");
-        setIdEdit(id);
-        setSelectedLesson(id);
+        setIdEdit(lesson.id);
+        setSelectedLesson(lesson.id);
+        setLessonName(lesson.name);
+        setLessonDescription(lesson.description);
         setOpenLesson(true);
     };
 
@@ -191,22 +189,25 @@ const MyWord = () => {
         api.put(`/folders/${selectedFolder.id}`, {
             name: folderName,
             description: folderDescription,
-          })
+        })
             .then(response => {
-              // Xử lý phản hồi thành công nếu cần
-              console.log('Thông tin thư mục đã được cập nhật thành công');
-              // Thực hiện các thao tác khác sau khi cập nhật thành công
-              setReloadData(true); // Kích hoạt fetch lại dữ liệu
+                // Xử lý phản hồi thành công nếu cần
+                console.log('Thông tin thư mục đã được cập nhật thành công');
+                // Thực hiện các thao tác khác sau khi cập nhật thành công
+                setReloadData(true); // Kích hoạt fetch lại dữ liệu
             })
             .catch(error => {
-              // Xử lý lỗi nếu có
-              console.error('Lỗi khi cập nhật thông tin thư mục:', error);
+                // Xử lý lỗi nếu có
+                console.error('Lỗi khi cập nhật thông tin thư mục:', error);
+                if (error.response === 401) {
+                    navigate('/signin');
+                }
             });
-      
+
         // Sau khi hoàn thành, đóng dialog
         handleClose();
-      };
-    
+    };
+
     const handleClickSaveLesson = () => {
         // Thực hiện logic cần thiết, ví dụ:
         console.log('Lesson name:', lessonName);
@@ -216,7 +217,7 @@ const MyWord = () => {
         api.post(`/lessons/${IdEit}`, {
             name: lessonName,
             description: lessonDescription,
-            })
+        })
             .then(response => {
                 // Xử lý phản hồi thành công nếu cần
                 console.log('Thông tin lesson đã được cập nhật thành công');
@@ -226,12 +227,15 @@ const MyWord = () => {
             .catch(error => {
                 // Xử lý lỗi nếu có
                 console.error('Lỗi khi cập nhật thông tin lesson:', error);
+                if (error.response === 401) {
+                    navigate('/signin');
+                }
             });
 
         // Sau khi hoàn thành, đóng dialog
         handleCloseLesson();
     };
-    
+
     const handleDeleteFolder = (id) => {
         // Gọi API hoặc thực hiện các thao tác khác tại đây
         api.delete(`/folders/${id}`)
@@ -244,8 +248,11 @@ const MyWord = () => {
             .catch(error => {
                 // Xử lý lỗi nếu có
                 console.error('Lỗi khi xóa thư mục:', error);
+                if (error.response === 401) {
+                    navigate('/signin');
+                }
             });
-        
+
     };
     const handleDeleteLesson = (id) => {
         // Gọi API hoặc thực hiện các thao tác khác tại đây
@@ -259,10 +266,13 @@ const MyWord = () => {
             .catch(error => {
                 // Xử lý lỗi nếu có
                 console.error('Lỗi khi xóa lesson:', error);
+                if (error.response === 401) {
+                    navigate('/signin');
+                }
             });
 
     };
-      
+
 
     const handleClose = () => {
         setOpen(false);
@@ -358,29 +368,45 @@ const MyWord = () => {
                 )}
                 <Grid container spacing={2} sx={{ padding: "20px" }}>
                     <Grid item xs={12} sm={4} md={3}>
-                        <Typography variant="h5" gutterBottom>
-                            Thư mục
-                        </Typography>
+                        <Box sx={{ marginBottom: '10px', backgroundColor: '#6667AB', borderRadius: '5px', padding: '5px', borderBottom:'2px solid white' }}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    color: 'white',
+                                    fontFamily: 'Arial,sans-serif'
+                                }}
+                            >
+                                Thư mục
+                            </Typography>
+                        </Box>
                         {folders.map((folder, index) => (
                             <Card
                                 key={index}
                                 variant="outlined"
                                 onClick={() => handleFolderClick(folder)}
-                                sx={{ cursor: "pointer", position: "relative" }}
+                                sx={{
+                                    cursor: "pointer", position: "relative", marginBottom: "10px",
+                                    color: folder === selectedFolder ? 'red' : '#4f4f4f',
+                                    backgroundColor: folder === selectedFolder ? 'lightyellow' : 'white',
+                                    
+                                }}
                             >
                                 <CardContent>
-                                    <Typography variant="h6">{folder.name}</Typography>
+                                    <Typography variant="h6" >{folder.name}</Typography>
                                     <Typography variant="body2">{folder.description}</Typography>
                                 </CardContent>
                                 <IconButton
                                     sx={{ position: "absolute", top: "5px", right: "5px" }}
-                                    onClick={()=>handleEditFolder(folder.id)}
+                                    onClick={() => handleEditFolder(folder)}
                                 >
                                     <Edit />
                                 </IconButton>
                                 <IconButton
                                     sx={{ position: "absolute", bottom: "5px", right: "5px" }}
-                                    onClick={()=>handleDeleteFolder(folder.id)}
+                                    onClick={() => handleDeleteFolder(folder.id)}
                                 >
                                     <Delete />
                                 </IconButton>
@@ -403,27 +429,39 @@ const MyWord = () => {
                     <Grid item xs={12} sm={8} md={9}>
                         {selectedFolder ? (
                             <div>
-                                <Typography variant="h5" gutterBottom>
-                                    {selectedFolder.name}
-                                </Typography>
+                                <Box sx={{ marginBottom: '10px', backgroundColor: '#6667AB', borderRadius: '5px', padding: '5px', borderBottom:'2px solid white' }}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    color: 'white',
+                                    fontFamily: 'Arial,sans-serif',
+                                }}
+                                
+                            >
+                                {selectedFolder.name}
+                            </Typography>
+                        </Box>
                                 {selectedFolder.lessons.length > 0 ? (
                                     selectedFolder.lessons.map((lesson, index) => (
                                         <Card
                                             key={index}
                                             variant="outlined"
-                                            sx={{ cursor: "pointer", position: "relative" }}
-                                            
+                                            sx={{ cursor: "pointer", position: "relative", marginBottom: "10px", color:'#4f4f4f' }}
+
                                         >
                                             <CardContent
-                                            onClick={() => handleLessonClick(lesson.id)}>
-                                                
-                                                <Typography variant="h6">{lesson.name}</Typography>
+                                                onClick={() => handleLessonClick(lesson.id)}>
+
+                                                <Typography variant="h6" style={{}}>{lesson.name}</Typography>
                                                 <Typography variant="body2">{lesson.description}</Typography>
-                                                
+
                                             </CardContent>
                                             <IconButton
                                                 sx={{ position: "absolute", top: "5px", right: "5px" }}
-                                                onClick={() => handleEditLesson(lesson.id)}
+                                                onClick={() => handleEditLesson(lesson)}
                                             >
                                                 <Edit />
                                             </IconButton>
@@ -436,14 +474,14 @@ const MyWord = () => {
                                         </Card>
                                     ))
                                 ) : (
-                                    <Typography variant="body2">Không có lesson</Typography>
+                                    <Typography variant="body2"></Typography>
                                 )}
                                 <Card variant="outlined" sx={{ cursor: "pointer", position: "relative" }}>
                                     <CardContent>
                                         <Button
                                             variant="contained"
                                             startIcon={<Add />}
-                                            onClick={()=>handleAddLesson(selectedFolder.id)}
+                                            onClick={() => handleAddLesson(selectedFolder.id)}
                                             sx={{ width: "100%" }}
                                         >
                                             Thêm lesson

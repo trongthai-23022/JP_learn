@@ -1,7 +1,16 @@
-.SeachPageDetail__contain{
+.SearchPageDetail__container{
     background-image: url("../../assets/images/bgr.jpg");
     background-size: cover;
     height: 100vh;
     overflow-x: scroll;
 
 }
+
+.SearchPageDetail__searchType{
+    display: flex;
+    margin-bottom: 10px;
+    margin-left: 20vw;
+}
+
+  
+
