@@ -5,3 +5,4 @@ CORS
 scikit-image
 imutils
 flask_cors
+scikit-learn

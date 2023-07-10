@@ -1,39 +1,45 @@
-# Sử dụng hình ảnh Laravel PHP fpm chính thức
-FROM php:8.1.0-fpm
+# Sử dụng image PHP Apache
+FROM php:8.1.0-apache
 
-# Cài đặt các gói phụ thuộc
+# Cài đặt các phần mềm và extension cần thiết
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
     libonig-dev \
-    libxml2-dev \
+    libzip-dev \
     zip \
-    unzip
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Cài đặt extension PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd  
+RUN docker-php-ext-install pdo_mysql mbstring zip
 
-# Đặt thư mục làm việc của Docker
+RUN a2enmod rewrite
+
+# Thiết lập thư mục làm việc
 WORKDIR /var/www/html
 
-# Cài đặt composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copy mã nguồn ứng dụng Laravel vào thư mục làm việc
+COPY . /var/www/html
 
-# Đặt biến môi trường để cho phép chạy Composer với quyền root/super user
-ENV COMPOSER_ALLOW_SUPERUSER 1
-
-# Sao chép các tệp cấu hình và mã nguồn của Laravel vào thư mục làm việc của Docker
-COPY . .
-
-# Cài đặt các gói phụ thuộc của Composer
-RUN composer install --no-interaction
-RUN composer update lcobucci/clock
-RUN composer update
-# Cấu hình quyền file và thư mục
+# Thiết lập quyền cho thư mục storage và bootstrap/cache
 RUN chown -R www-data:www-data \
     /var/www/html/storage \
     /var/www/html/bootstrap/cache
 
-# Tạo khối lệnh khi khởi động container
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Cài đặt Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Cài đặt dependencies của ứng dụng Laravel
+RUN composer install --no-interaction --no-scripts --prefer-dist
+
+# Tạo key ứng dụng Laravel
+RUN php artisan key:generate
+
+# Phân quyền cho thư mục storage
+RUN chmod -R 777 /var/www/html/storage
+
+# Mở cổng 80 cho Apache
+EXPOSE 80
+
+# CMD ["php", "-S", "0.0.0.0:8000", "-t", "/var/www/html/public"] (Dùng cho PHP Built-in Server)
+
+# Chạy Apache
+CMD ["apache2-foreground"]
